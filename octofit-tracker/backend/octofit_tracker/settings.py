@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-nx8!)%@bj(b!47gr#xkq=%x*6!-w5)gmaqpnw%md&1sgi((r6+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'zany-goldfish-q7gqgjvg9q739rxj-8000.app.github.dev']
 
 
 # Application definition

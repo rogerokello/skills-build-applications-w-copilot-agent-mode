@@ -10,7 +10,7 @@ from .serializers import UserSerializer, TeamSerializer, ActivitySerializer, Lea
 
 @api_view(['GET'])
 def api_root(request, format=None):
-    base_url = 'http://[REPLACE-THIS-WITH-YOUR-CODESPACE-NAME]-8000.app.github.dev/'
+    base_url = 'https://zany-goldfish-q7gqgjvg9q739rxj-8000.app.github.dev/'
     return Response({
         'users': base_url + 'api/users/?format=api',
         'teams': base_url + 'api/teams/?format=api',
