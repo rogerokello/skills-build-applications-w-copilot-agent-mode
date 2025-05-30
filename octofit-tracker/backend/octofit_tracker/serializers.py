@@ -18,11 +18,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 class TeamSerializer(serializers.ModelSerializer):
     _id = ObjectIdField()
-    members = UserSerializer(many=True)
+    members = serializers.SerializerMethodField()
 
     class Meta:
         model = Team
         fields = '__all__'
+
+    def get_members(self, obj):
+        return [UserSerializer(member).data for member in obj.members.all()]
 
 class ActivitySerializer(serializers.ModelSerializer):
     _id = ObjectIdField()

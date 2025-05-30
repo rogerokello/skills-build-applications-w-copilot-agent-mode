@@ -10,8 +10,14 @@ test_data = {
         {"_id": ObjectId(), "username": "sleeptoken", "email": "sleeptoken@mhigh.edu", "password": "sleeptokenpassword"},
     ],
     "teams": [
-        {"_id": ObjectId(), "name": "Blue Team", "members": ["thundergod", "metalgeek"]},
-        {"_id": ObjectId(), "name": "Gold Team", "members": ["zerocool", "crashoverride"]},
+        {"_id": ObjectId(), "name": "Blue Team", "members": [
+            {"_id": ObjectId(), "username": "thundergod", "email": "thundergod@mhigh.edu"},
+            {"_id": ObjectId(), "username": "metalgeek", "email": "metalgeek@mhigh.edu"}
+        ]},
+        {"_id": ObjectId(), "name": "Gold Team", "members": [
+            {"_id": ObjectId(), "username": "zerocool", "email": "zerocool@mhigh.edu"},
+            {"_id": ObjectId(), "username": "crashoverride", "email": "crashoverride@hmhigh.edu"}
+        ]},
     ],
     "activities": [
         {"_id": ObjectId(), "user": "thundergod", "activity_type": "Cycling", "duration": timedelta(hours=1)},

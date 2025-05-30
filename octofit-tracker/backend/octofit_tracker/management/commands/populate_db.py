@@ -25,7 +25,7 @@ class Command(BaseCommand):
             self.stdout.write(f"Warning: user_map contains {len(user_map)} entries, but test_data['users'] contains {len(test_data['users'])} entries.")
 
         # Enhanced logging for missing usernames
-        missing_usernames = [username for team_data in test_data['teams'] for username in team_data.get('members', []) if username not in user_map]
+        missing_usernames = [member['username'] for team_data in test_data['teams'] for member in team_data.get('members', []) if member['username'] not in user_map]
         if missing_usernames:
             self.stdout.write(f"Error: The following usernames are missing from user_map: {missing_usernames}")
 
@@ -35,15 +35,20 @@ class Command(BaseCommand):
         # Populate teams with individual save calls
         for team_data in test_data['teams']:
             self.stdout.write(f"Processing team: {team_data}")
-            missing_members = [username for username in team_data.get('members', []) if username not in user_map]
+            missing_members = [member['username'] for member in team_data.get('members', []) if member['username'] not in user_map]
             if missing_members:
                 self.stdout.write(f"Error: Missing members for team '{team_data['name']}': {missing_members}")
                 continue
 
             try:
-                team_data['members'] = [user_map[username] for username in team_data['members']]
-                team = Team(**team_data)
-                team.save()  # Save each team individually
+                team = Team(name=team_data['name'])
+                team.save()  # Save the team first
+
+                for member in team_data['members']:
+                    user_instance = user_map[member['username']]
+                    team.members.add(user_instance)  # Add members to the team
+
+                team.save()  # Save the team with members
             except Exception as e:
                 self.stdout.write(f"Unexpected error while processing team '{team_data['name']}': {e}")
                 self.stdout.write(f"Exception details: {e.__class__.__name__}: {e}")
@@ -75,15 +80,20 @@ class Command(BaseCommand):
         # Fix Team model population
         for team_data in test_data['teams']:
             self.stdout.write(f"Processing team: {team_data}")
-            missing_members = [username for username in team_data.get('members', []) if username not in user_map]
+            missing_members = [member['username'] for member in team_data.get('members', []) if member['username'] not in user_map]
             if missing_members:
                 self.stdout.write(f"Error: Missing members for team '{team_data['name']}': {missing_members}")
                 continue
 
             try:
-                team_data['members'] = [user_map[username] for username in team_data['members']]
-                team = Team(**team_data)
-                team.save()  # Save each team individually
+                team = Team(name=team_data['name'])
+                team.save()  # Save the team first
+
+                for member in team_data['members']:
+                    user_instance = user_map[member['username']]
+                    team.members.add(user_instance)  # Add members to the team
+
+                team.save()  # Save the team with members
             except Exception as e:
                 self.stdout.write(f"Unexpected error while processing team '{team_data['name']}': {e}")
                 self.stdout.write(f"Exception details: {e.__class__.__name__}: {e}")
